@@ -12,14 +12,15 @@ pub fn main() {
   let assert env.Vars(port) = env.get_environment()
 
   io.println("Hello from webapp!")
-  let empty_body = mist.Bytes(bytes_builder.from_string("404 bro"))
+  let empty_body =
+    mist.Bytes(bytes_builder.from_string("Page not found, brother :("))
   let not_found = response.set_body(response.new(404), empty_body)
 
   let assert Ok(_) =
     fn(req: Request(Connection)) -> Response(ResponseData) {
       case request.path_segments(req) {
-        [] -> index()
-        ["greet", name] -> greet(name)
+        [] -> index(req)
+        ["clip", id] -> clip(id, req)
         _ -> not_found
       }
     }
@@ -30,7 +31,7 @@ pub fn main() {
   process.sleep_forever()
 }
 
-fn index() -> Response(ResponseData) {
+fn index(_: Request(Connection)) -> Response(ResponseData) {
   let res = response.new(200)
   let html =
     html([], [
@@ -41,12 +42,12 @@ fn index() -> Response(ResponseData) {
   response.set_body(res, web_utils.render(html))
 }
 
-fn greet(name: String) -> Response(ResponseData) {
+fn clip(id: String, _: Request(Connection)) -> Response(ResponseData) {
   let res = response.new(200)
   let html =
     html([], [
-      html.head([], [html.title([], "Greetings!")]),
-      html.body([], [html.h1([], [html.text("Hey there, " <> name <> "!")])]),
+      web_utils.make_head(id, "placeholder description"),
+      html.body([], [html.h1([], [html.text("You're watching " <> id <> "!")])]),
     ])
 
   response.set_body(res, web_utils.render(html))
