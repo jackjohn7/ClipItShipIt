@@ -1,4 +1,3 @@
-import gleam
 import gleam/erlang/os
 import gleam/erlang/process
 import gleam/int
