@@ -13,9 +13,12 @@ Application allowing a user to share clips shorter than 10 minutes.
 # Stack
 
 - Gleam
+  - Mist
+  - Lustre
 - PostgreSQL
 - Valkey (FOSS fork of Redis)
-- Docker
+- Docker/Podman
+- Tailwind
 
 # Setup
 
@@ -27,3 +30,9 @@ be too bothersome for me.
 2. Add all remotes
 3. Create alias to push all origin: `git config --global alias.pushall '!git remote | xargs -L1 git push --all'`
    **OR** Use the script `./scripts/push_all.sh`.
+
+# TO-DO
+
+- Use Testcontainers to start required databases in local development and tests (elixir is supported)
+- Check out tailwindcss
+  - Perhaps write a library if necessary for building tailwind classes from lustre code
