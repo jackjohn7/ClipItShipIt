@@ -13,12 +13,12 @@ Application allowing a user to share clips shorter than 10 minutes.
 # Stack
 
 - Gleam
-  - Mist
-  - Lustre
+  - Mist + Wisp
+  - Lustre + Sketch
 - PostgreSQL
 - Valkey (FOSS fork of Redis)
 - Docker/Podman
-- Tailwind
+- [Peggy](https://github/com/jackjohn7/peggy)
 
 # Setup
 
