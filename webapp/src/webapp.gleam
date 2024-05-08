@@ -13,7 +13,7 @@ pub fn main() {
 
   wisp.configure_logger()
   let assert Ok(_) =
-    wisp.mist_handler(router.create_router(router.new_state), secret_key_base)
+    wisp.mist_handler(router.create_router(router.new_state()), secret_key_base)
     |> mist.new
     |> mist.port(port)
     |> mist.start_http

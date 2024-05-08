@@ -1,7 +1,6 @@
 import glanoid
 import gleam/erlang/process
 import gleam/http.{Get, Post}
-import gleam/io
 import gleam/list
 import lustre/attribute
 import lustre/element
@@ -11,11 +10,12 @@ import webapp/components/utils
 import wisp.{type Request, type Response, type UploadedFile}
 
 pub type AppState {
-  AppState
+  AppState(priv_dir: String)
 }
 
 pub fn new_state() {
-  AppState
+  let assert Ok(priv_directory) = wisp.priv_directory("webapp")
+  AppState(priv_directory <> "/static")
 }
 
 pub fn middleware(
@@ -29,10 +29,11 @@ pub fn middleware(
   handle_request(req)
 }
 
-pub fn create_router(_app_state) {
+pub fn create_router(app_state: AppState) {
   let assert Ok(nanoid) = glanoid.make_generator(glanoid.default_alphabet)
   fn(req: Request) -> Response {
     use req <- middleware(req)
+    use <- wisp.serve_static(req, under: "/static", from: app_state.priv_dir)
 
     case wisp.path_segments(req) {
       [] -> index(req)
@@ -48,7 +49,7 @@ fn index(req: Request) -> Response {
     html([], [
       utils.make_head("ClipIt&ShipIt", "Capture the moment"),
       html.body([], [
-        html.h1([], [html.text("Clips")]),
+        html.h1([attribute.class("text-3xl")], [html.text("Clips")]),
         html.a([attribute.href("/upload")], [html.text("Upload here!")]),
       ]),
     ])

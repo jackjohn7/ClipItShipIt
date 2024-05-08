@@ -8,6 +8,10 @@ pub fn make_head(title: String, desc: String) {
   html.head([], [
     html.title([], title),
     html.meta([attribute.attribute("description", desc)]),
+    html.link([
+      attribute.rel("stylesheet"),
+      attribute.href("/static/css/app.css"),
+    ]),
   ])
 }
 
